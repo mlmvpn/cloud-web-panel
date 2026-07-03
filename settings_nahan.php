@@ -139,9 +139,9 @@ function renderUsers() {
                 '<div><b>' + escapeHtml(u.name || 'بدون‌نام') + '</b>' + (u.isPaused ? ' <span class="badge" style="color:var(--red-error)">متوقف</span>' : '') +
                     '<div class="text-sm dim mono" style="direction:ltr;text-align:left;">' + escapeHtml(u.uuid) + '</div></div>' +
                 '<div class="flex gap-8">' +
-                    '<button type="button" class="btn btn-secondary btn-sm" data-act="fetch" data-idx="' + idx + '"><span class="material-symbols-outlined">download</span> دریافت کانفیگ</button>' +
-                    '<button type="button" class="btn btn-ghost btn-sm" data-act="edit" data-idx="' + idx + '"><span class="material-symbols-outlined">edit</span> ویرایش</button>' +
-                    '<button type="button" class="btn btn-ghost btn-sm" data-act="del" data-idx="' + idx + '"><span class="material-symbols-outlined">delete</span> حذف</button>' +
+                    '<button type="button" class="btn btn-secondary btn-sm" data-act="fetch" data-idx="' + idx + '">' + CWP.icon('download') + ' دریافت کانفیگ</button>' +
+                    '<button type="button" class="btn btn-ghost btn-sm" data-act="edit" data-idx="' + idx + '">' + CWP.icon('edit') + ' ویرایش</button>' +
+                    '<button type="button" class="btn btn-ghost btn-sm" data-act="del" data-idx="' + idx + '">' + CWP.icon('delete') + ' حذف</button>' +
                 '</div>' +
             '</div>' +
             '<div id="edit-' + idx + '" style="display:none;margin-top:12px;">' +

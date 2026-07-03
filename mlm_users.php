@@ -79,7 +79,7 @@ function loadUsers() {
 function renderUsers(users) {
     var el = document.getElementById('usersList');
     if (!users.length) {
-        el.innerHTML = '<div class="empty-state card"><div class="icon material-symbols-outlined">person_off</div><p>هنوز کاربری تعریف نشده.</p></div>';
+        el.innerHTML = '<div class="empty-state card"><div class="icon">' + CWP.icon('person_off', 'icon-lg') + '</div><p>هنوز کاربری تعریف نشده.</p></div>';
         return;
     }
     el.innerHTML = '';
@@ -100,14 +100,14 @@ function renderUsers(users) {
                         '<div class="text-sm dim">مصرف: ' + Math.round(used * 1024) + ' مگابایت از ' + limitStr + '</div>' +
                     '</div>' +
                 '</div>' +
-                '<button type="button" class="btn btn-secondary btn-sm" data-act="toggle" data-user="' + escapeHtml(u.username) + '"><span class="material-symbols-outlined">' + (u.is_active === 1 ? 'pause' : 'play_arrow') + '</span> ' + (u.is_active === 1 ? 'توقف' : 'فعال') + '</button>' +
+                '<button type="button" class="btn btn-secondary btn-sm" data-act="toggle" data-user="' + escapeHtml(u.username) + '">' + CWP.icon(u.is_active === 1 ? 'pause' : 'play_arrow') + ' ' + (u.is_active === 1 ? 'توقف' : 'فعال') + '</button>' +
             '</div>' +
             (limit ? '<div class="progress-track" style="margin-top:10px;"><div class="progress-fill" style="width:' + (progress * 100) + '%;"></div></div>' : '') +
             '<div class="flex gap-8" style="margin-top:14px;flex-wrap:wrap;">' +
-                '<button type="button" class="btn btn-secondary btn-sm" data-act="configs" data-user="' + escapeHtml(u.username) + '"><span class="material-symbols-outlined">download</span> دریافت کانفیگ</button>' +
-                '<button type="button" class="btn btn-ghost btn-sm" data-act="status" data-user="' + escapeHtml(u.username) + '"><span class="material-symbols-outlined">content_copy</span> کپی لینک وضعیت</button>' +
-                '<button type="button" class="btn btn-ghost btn-sm" data-act="edit" data-user="' + escapeHtml(u.username) + '" data-raw=\'' + JSON.stringify(u).replace(/'/g, '&#39;') + '\'><span class="material-symbols-outlined">edit</span> ویرایش</button>' +
-                '<button type="button" class="btn btn-ghost btn-sm" style="color:var(--red-error)" data-act="delete" data-user="' + escapeHtml(u.username) + '"><span class="material-symbols-outlined">delete</span> حذف</button>' +
+                '<button type="button" class="btn btn-secondary btn-sm" data-act="configs" data-user="' + escapeHtml(u.username) + '">' + CWP.icon('download') + ' دریافت کانفیگ</button>' +
+                '<button type="button" class="btn btn-ghost btn-sm" data-act="status" data-user="' + escapeHtml(u.username) + '">' + CWP.icon('content_copy') + ' کپی لینک وضعیت</button>' +
+                '<button type="button" class="btn btn-ghost btn-sm" data-act="edit" data-user="' + escapeHtml(u.username) + '" data-raw=\'' + JSON.stringify(u).replace(/'/g, '&#39;') + '\'>' + CWP.icon('edit') + ' ویرایش</button>' +
+                '<button type="button" class="btn btn-ghost btn-sm" style="color:var(--red-error)" data-act="delete" data-user="' + escapeHtml(u.username) + '">' + CWP.icon('delete') + ' حذف</button>' +
             '</div>';
         el.appendChild(card);
     });

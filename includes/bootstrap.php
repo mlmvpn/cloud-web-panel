@@ -27,7 +27,18 @@ function h($value): string {
 }
 
 function icon(string $name, string $extraClass = ''): string {
-    return '<span class="material-symbols-outlined' . ($extraClass !== '' ? ' ' . h($extraClass) : '') . '" aria-hidden="true">' . h($name) . '</span>';
+    static $cache = [];
+    if (!isset($cache[$name])) {
+        $safeName = preg_replace('/[^a-z0-9_]/', '', $name);
+        $file = __DIR__ . '/../assets/icons/' . $safeName . '.svg';
+        $cache[$name] = is_file($file) ? file_get_contents($file) : '';
+    }
+    $svg = $cache[$name];
+    if ($svg === '') {
+        return '';
+    }
+    $class = 'cw-icon' . ($extraClass !== '' ? ' ' . $extraClass : '');
+    return preg_replace('/<svg /', '<svg class="' . h($class) . '" aria-hidden="true" ', $svg, 1);
 }
 
 const CW_ALERT_ICONS = [
@@ -67,6 +78,9 @@ if (!file_exists($__configPath)) {
     exit;
 }
 require_once $__configPath;
+
+require_once __DIR__ . '/logger.php';
+install_global_error_logging();
 
 require_once __DIR__ . '/db.php';
 require_once __DIR__ . '/crypto.php';

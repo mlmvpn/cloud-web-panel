@@ -5,6 +5,10 @@ require_login();
 $userId = current_user_id();
 $accounts = list_user_accounts($userId);
 
+function cw_engine_label(string $label) {
+    echo '<div class="text-sm dim" style="padding:10px 18px 0;font-weight:600;">' . h($label) . '</div>';
+}
+
 $pageTitle = 'اکانت‌های کلادفلر';
 $activeNav = 'dashboard';
 require __DIR__ . '/includes/layout_header.php';
@@ -20,7 +24,7 @@ require __DIR__ . '/includes/layout_header.php';
 
 <?php if (!$accounts): ?>
     <div class="empty-state card">
-        <div class="icon material-symbols-outlined">cloud_off</div>
+        <?= icon('cloud_off', 'icon') ?>
         <p>هنوز هیچ اکانت کلادفلری اضافه نکرده‌اید.</p>
         <button class="btn btn-primary" style="margin-top:10px;" onclick="document.getElementById('addAccModal').classList.add('open')"><?= icon('add') ?> افزودن اولین اکانت</button>
     </div>
@@ -70,12 +74,6 @@ require __DIR__ . '/includes/layout_header.php';
             <?php endif; ?>
         </div>
     <?php else: ?>
-        <?php
-        function cw_engine_label(string $label) {
-            echo '<div class="text-sm dim" style="padding:10px 18px 0;font-weight:600;">' . h($label) . '</div>';
-        }
-        ?>
-
         <?php cw_engine_label('BPB'); ?>
         <div class="btn-group">
             <button class="btn-cell" data-action="deploy_bpb" data-account="<?= (int) $acc['id'] ?>" <?= $acc['status'] === 'deployed' ? 'disabled' : '' ?>>

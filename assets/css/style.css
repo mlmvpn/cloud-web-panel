@@ -1,5 +1,4 @@
 @import url('https://fonts.bunny.net/css?family=vazirmatn:400,500,600,700,800');
-@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,300..500,0..1,-50..200&display=swap');
 
 :root {
     
@@ -75,22 +74,14 @@ p { line-height: 1.85; }
 a { color: var(--primary); text-decoration: none; }
 a:hover { color: var(--primary-strong); }
 
-.material-symbols-outlined {
-    font-family: 'Material Symbols Outlined';
-    font-weight: 400;
-    font-style: normal;
-    font-size: 20px;
-    line-height: 1;
-    letter-spacing: normal;
-    text-transform: none;
+.cw-icon {
     display: inline-block;
-    white-space: nowrap;
-    word-wrap: normal;
-    direction: ltr;
+    width: 1.15em;
+    height: 1.15em;
+    font-size: 20px;
     vertical-align: middle;
-    -webkit-font-feature-settings: 'liga';
-    font-feature-settings: 'liga';
-    -moz-osx-font-smoothing: grayscale;
+    direction: ltr;
+    flex-shrink: 0;
 }
 .icon-sm { font-size: 16px !important; }
 .icon-lg { font-size: 28px !important; }
@@ -147,7 +138,7 @@ a:hover { color: var(--primary-strong); }
 }
 .navbar nav a:hover { color: var(--text-primary); background: var(--surface-hover); }
 .navbar nav a.active { color: var(--primary); background: var(--primary-soft); }
-.navbar nav a .material-symbols-outlined { font-size: 18px; }
+.navbar nav a .cw-icon { font-size: 18px; }
 
 .card {
     background: var(--surface-dark);
@@ -224,10 +215,10 @@ input::placeholder, textarea::placeholder { color: var(--text-dim); }
 .btn:hover { text-decoration: none; }
 .btn:active { transform: scale(.97); }
 .btn:disabled { opacity: .45; cursor: not-allowed; transform: none; }
-.btn .material-symbols-outlined { font-size: 18px; }
+.btn .cw-icon { font-size: 18px; }
 .btn-block { width: 100%; }
 .btn-sm { padding: 7px 14px; font-size: 12px; border-radius: 999px; }
-.btn-sm .material-symbols-outlined { font-size: 16px; }
+.btn-sm .cw-icon { font-size: 16px; }
 
 .btn-primary { background: var(--primary); color: var(--on-primary); box-shadow: var(--shadow-sm); }
 .btn-primary:hover { background: var(--primary-strong); box-shadow: var(--shadow-md); }
@@ -259,7 +250,7 @@ input::placeholder, textarea::placeholder { color: var(--text-dim); }
 .btn-group > .btn-cell:first-child { border-inline-start: none; }
 .btn-group > .btn-cell:disabled { color: var(--text-dim); cursor: not-allowed; }
 .btn-group > .btn-cell .icon,
-.btn-group > .btn-cell .material-symbols-outlined { display: block; margin: 0 auto 4px; }
+.btn-group > .btn-cell .cw-icon { display: block; margin: 0 auto 4px; }
 
 .alert { display: flex; align-items: flex-start; gap: 10px; padding: 13px 16px; border-radius: var(--radius-sm); margin-bottom: 14px; font-size: 13px; line-height: 1.8; border: 1px solid transparent; }
 .alert-success { background: var(--green-soft); border-color: rgba(129,201,149,.3); color: var(--green-ok); }
@@ -315,7 +306,7 @@ code, .mono { font-family: "Consolas", "SFMono-Regular", Menlo, monospace; direc
 
 .empty-state { text-align: center; padding: 64px 20px; color: var(--text-muted); }
 .empty-state .icon { margin-bottom: 14px; opacity: .7; }
-.empty-state .material-symbols-outlined.icon { font-size: 44px; color: var(--text-dim); }
+.empty-state .cw-icon.icon { font-size: 44px; color: var(--text-dim); }
 
 .auth-shell { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
 .auth-card { width: 100%; max-width: 380px; }
@@ -361,7 +352,7 @@ table tr:last-child td { border-bottom: none; }
     .navbar .brand span:not(.dot) { display: none; }
     .navbar nav { gap: 2px; }
     .navbar nav a { padding: 7px 9px; font-size: 12px; }
-    .navbar nav a span:not(.material-symbols-outlined) { display: none; }
+    .navbar nav a span:not(.cw-icon) { display: none; }
     .container { padding: 18px 12px 80px; }
     .card { padding: 16px; border-radius: 16px; }
 }

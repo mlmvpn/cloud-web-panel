@@ -38,7 +38,7 @@ require __DIR__ . '/includes/layout_header.php';
 
 <?php if (!$groups): ?>
     <div class="empty-state card">
-        <div class="icon material-symbols-outlined">inbox</div>
+        <?= icon('inbox', 'icon') ?>
         <p>هنوز کانفیگی دریافت نکرده‌اید.</p>
         <a class="btn btn-primary" style="margin-top:10px;" href="<?= url('/dashboard.php') ?>"><?= icon('arrow_back') ?> رفتن به اکانت‌ها و دریافت کانفیگ</a>
     </div>

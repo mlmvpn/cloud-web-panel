@@ -4,6 +4,7 @@ config.php
 # فایل‌های نشانهٔ اجرای یک‌بارهٔ مهاجرت اسکیما (به‌صورت خودکار روی هر نصب دوباره ساخته می‌شوند)
 includes/.schema_v2
 includes/.schema_v3
+includes/.schema_v4
 
 # سیستم‌عامل / ادیتور
 .DS_Store

@@ -30,7 +30,7 @@ proxyip.example.com"></textarea>
     <div class="card-title"><?= icon('list', 'icon-sm') ?> لیست فعلی (<?= count($ips) ?>)</div>
     <?php if (!$ips): ?>
         <div class="empty-state" style="padding:32px 20px;">
-            <div class="icon material-symbols-outlined" style="font-size:32px;">location_off</div>
+            <?= icon('location_off', 'icon') ?>
             <p class="text-sm muted mb-0">هنوز هیچ IP تمیزی اضافه نشده است.</p>
         </div>
     <?php else: ?>

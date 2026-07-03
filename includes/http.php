@@ -29,6 +29,7 @@ function http_request(string $method, string $url, array $headers = [], $body = 
     if ($raw === false) {
         $err = curl_error($ch);
         curl_close($ch);
+        log_event('http_error', 'درخواست ناموفق: ' . $err, ['url' => $url, 'method' => $method]);
         return ['ok' => false, 'code' => 0, 'body' => '', 'json' => null, 'error' => $err];
     }
     $code = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
@@ -42,7 +43,11 @@ function http_request(string $method, string $url, array $headers = [], $body = 
             $json = $decoded;
         }
     }
-    return ['ok' => $code >= 200 && $code < 300, 'code' => $code, 'body' => $raw, 'json' => $json, 'error' => null];
+    $ok = $code >= 200 && $code < 300;
+    if (!$ok) {
+        log_event('http_error', 'پاسخ ناموفق از سرور خارجی', ['url' => $url, 'method' => $method, 'code' => $code, 'body' => mb_substr($raw, 0, 500)]);
+    }
+    return ['ok' => $ok, 'code' => $code, 'body' => $raw, 'json' => $json, 'error' => null];
 }
 
 function cf_api(string $method, string $url, string $token, string $email, $jsonBody = null, int $timeout = 20): array {
@@ -115,6 +120,7 @@ function http_request_with_headers(string $method, string $url, array $headers =
     if ($raw === false) {
         $err = curl_error($ch);
         curl_close($ch);
+        log_event('http_error', 'درخواست ناموفق: ' . $err, ['url' => $url, 'method' => $method]);
         return ['ok' => false, 'code' => 0, 'body' => '', 'json' => null, 'error' => $err, 'headers' => []];
     }
     $code = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
@@ -142,7 +148,11 @@ function http_request_with_headers(string $method, string $url, array $headers =
             $json = $decoded;
         }
     }
-    return ['ok' => $code >= 200 && $code < 300, 'code' => $code, 'body' => $rawBody, 'json' => $json, 'error' => null, 'headers' => $headersOut];
+    $ok = $code >= 200 && $code < 300;
+    if (!$ok) {
+        log_event('http_error', 'پاسخ ناموفق از سرور خارجی', ['url' => $url, 'method' => $method, 'code' => $code, 'body' => mb_substr($rawBody, 0, 500)]);
+    }
+    return ['ok' => $ok, 'code' => $code, 'body' => $rawBody, 'json' => $json, 'error' => null, 'headers' => $headersOut];
 }
 
 function build_cookie_header(array $setCookieHeaders): string {

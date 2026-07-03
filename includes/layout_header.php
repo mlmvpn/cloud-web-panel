@@ -24,6 +24,7 @@ $__user = current_user();
             <a href="<?= url('/groups.php') ?>" class="<?= ($activeNav ?? '') === 'groups' ? 'active' : '' ?>"><?= icon('dns') ?><span>کانفیگ‌ها</span></a>
             <?php if (current_user_is_admin()): ?>
                 <a href="<?= url('/admin_clean_ips.php') ?>" class="<?= ($activeNav ?? '') === 'admin_clean_ips' ? 'active' : '' ?>"><?= icon('shield') ?><span>IP تمیز</span></a>
+                <a href="<?= url('/admin_logs.php') ?>" class="<?= ($activeNav ?? '') === 'admin_logs' ? 'active' : '' ?>"><?= icon('monitoring') ?><span>گزارش خطاها</span></a>
             <?php endif; ?>
             <a href="<?= url('/logout.php') ?>"><?= icon('logout') ?><span>خروج</span></a>
         <?php else: ?>

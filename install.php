@@ -161,7 +161,7 @@ $allChecksPass = !in_array(false, $phpChecks, true);
 <body>
 <div class="container-narrow" style="padding-top:40px;">
     <div class="auth-logo">
-        <div class="dot"><span class="material-symbols-outlined icon-lg" aria-hidden="true">cloud</span></div>
+        <div class="dot"><svg class="cw-icon icon-lg" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M6.5 20q-2.275 0-3.887-1.575T1 14.575q0-1.95 1.175-3.475T5.25 9.15q.625-2.3 2.5-3.725T12 4q2.925 0 4.963 2.038T19 11q1.725.2 2.863 1.488T23 15.5q0 1.875-1.312 3.188T18.5 20z"/></svg></div>
         <h2 style="margin:0;">نصب پنل ابری</h2>
         <p class="muted text-sm">راه‌اندازی اولیهٔ دیتابیس و تنظیمات سایت</p>
     </div>
@@ -174,7 +174,7 @@ $allChecksPass = !in_array(false, $phpChecks, true);
             <div class="alert alert-warning">
                 برای امنیت، همین الان فایل <code>install.php</code> را از روی هاست حذف یا تغییرنام دهید تا کسی نتواند دوباره نصب را اجرا کند.
             </div>
-            <a class="btn btn-primary btn-block" href="register.php"><span class="material-symbols-outlined" aria-hidden="true">arrow_back</span> رفتن به صفحهٔ ثبت‌نام</a>
+            <a class="btn btn-primary btn-block" href="register.php"><svg class="cw-icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="m7.825 13l5.6 5.6L12 20l-8-8l8-8l1.425 1.4l-5.6 5.6H20v2z"/></svg> رفتن به صفحهٔ ثبت‌نام</a>
         </div>
     <?php elseif ($manualConfig): ?>
         <div class="card">
@@ -241,7 +241,7 @@ $allChecksPass = !in_array(false, $phpChecks, true);
                     <input type="password" name="db_pass" placeholder="••••••••">
                 </div>
                 <?php if ($forceReinstall): ?><input type="hidden" name="force_reinstall" value="RESET"><?php endif; ?>
-                <button class="btn btn-primary btn-block" type="submit" <?= $allChecksPass ? '' : 'disabled' ?>><span class="material-symbols-outlined" aria-hidden="true">rocket_launch</span> نصب و ساخت جداول</button>
+                <button class="btn btn-primary btn-block" type="submit" <?= $allChecksPass ? '' : 'disabled' ?>><svg class="cw-icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="m5.65 10.025l1.95.825q.35-.7.725-1.35t.825-1.3l-1.4-.275zM9.2 12.1l2.85 2.825q1.05-.4 2.25-1.225t2.25-1.875q1.75-1.75 2.738-3.887T20.15 4q-1.8-.125-3.95.863T12.3 7.6q-1.05 1.05-1.875 2.25T9.2 12.1m3.875-3.037q0-.838.575-1.413t1.425-.575t1.425.575t.575 1.413t-.575 1.412t-1.425.575t-1.425-.575t-.575-1.412m1.05 9.437l2.1-2.1l-.275-1.4q-.65.45-1.3.812t-1.35.713zM21.95 2.175q.475 3.025-.587 5.888T17.7 13.525L18.2 16q.1.5-.05.975t-.5.825l-4.2 4.2l-2.1-4.925L7.075 12.8L2.15 10.7l4.175-4.2q.35-.35.838-.5t.987-.05l2.475.5q2.6-2.6 5.45-3.675t5.875-.6m-18.025 13.8q.875-.875 2.138-.887t2.137.862t.863 2.138t-.888 2.137q-.625.625-2.087 1.075t-4.038.8q.35-2.575.8-4.038t1.075-2.087m1.425 1.4q-.25.25-.5.913t-.35 1.337q.675-.1 1.338-.337t.912-.488q.3-.3.325-.725T6.8 17.35t-.725-.288t-.725.313"/></svg> نصب و ساخت جداول</button>
             </form>
         <?php endif; ?>
     <?php endif; ?>
