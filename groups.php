@@ -26,11 +26,11 @@ require __DIR__ . '/includes/layout_header.php';
     <div style="margin-top:8px;">
         <?php
         cw_copy_all_row('ALL', 'همهٔ پنل‌ها', $totalCount);
-        cw_copy_all_row('BPB', 'BPB', $counts['BPB']);
-        cw_copy_all_row('EDG', 'EDG', $counts['EDG']);
-        cw_copy_all_row('NHN', 'Nahan', $counts['NHN']);
-        cw_copy_all_row('MLM', 'MLM', $counts['MLM']);
-        cw_copy_all_row('ZEUS', 'Zeus', $counts['ZEUS']);
+        cw_copy_all_row('BPB', 'BPB', $counts['BPB'] ?? 0);
+        cw_copy_all_row('EDG', 'EDG', $counts['EDG'] ?? 0);
+        cw_copy_all_row('NHN', 'Nahan', $counts['NHN'] ?? 0);
+        cw_copy_all_row('MLM', 'MLM', $counts['MLM'] ?? 0);
+        cw_copy_all_row('ZEUS', 'Zeus', $counts['ZEUS'] ?? 0);
         ?>
     </div>
 </div>

@@ -76,7 +76,11 @@ function list_user_all_uris(int $userId, ?string $engineType = null): array {
     $sql .= ' ORDER BY n.id DESC';
     $stmt = db()->prepare($sql);
     $stmt->execute($params);
-    return array_map('decrypt_for_user', array_column($stmt->fetchAll(), 'uri'));
+    $out = [];
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $out[] = decrypt_for_user($row['uri']);
+    }
+    return $out;
 }
 
 function count_user_uris_by_engine(int $userId): array {

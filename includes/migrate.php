@@ -56,5 +56,11 @@ function ensure_column(string $table, string $column, string $definition): void 
     if ((int) $stmt->fetchColumn() > 0) {
         return;
     }
-    $pdo->exec("ALTER TABLE `{$table}` ADD COLUMN `{$column}` {$definition}");
+    try {
+        $pdo->exec("ALTER TABLE `{$table}` ADD COLUMN `{$column}` {$definition}");
+    } catch (PDOException $e) {
+        if (strpos($e->getMessage(), '1060') === false) {
+            throw $e;
+        }
+    }
 }

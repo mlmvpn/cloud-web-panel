@@ -3,6 +3,15 @@ define('ZEUS_WORKER_ASSET', __DIR__ . '/../../assets/workers/zeus_worker.js');
 define('ZEUS_PANEL_PASSWORD', 'Admin123!');
 
 function cw_zeus_deploy(array $account, int $userId): array {
+    if (!empty($account['zeus_worker_url'])) {
+        $passwordSetup = cw_zeus_ensure_password($account['zeus_worker_url']);
+        if (!$passwordSetup['success']) {
+            return ['success' => false, 'message' => $passwordSetup['message']];
+        }
+        update_account_fields((int) $account['id'], $userId, ['zeus_status' => 'deployed']);
+        return ['success' => true, 'message' => 'دیپلوی Zeus با موفقیت انجام شد.', 'url' => $account['zeus_worker_url']];
+    }
+
     $token = account_auth_token($account);
     $email = $account['email'];
     $accountId = $account['account_id'];
@@ -71,17 +80,18 @@ function cw_zeus_deploy(array $account, int $userId): array {
 
     $finalUrl = "https://{$workerName}.{$subdomain}.workers.dev";
 
+    update_account_fields((int) $account['id'], $userId, [
+        'zeus_worker_url' => $finalUrl,
+        'zeus_db_id' => $databaseId,
+        'has_subdomain' => 1,
+    ]);
+
     $passwordSetup = cw_zeus_ensure_password($finalUrl);
     if (!$passwordSetup['success']) {
         return ['success' => false, 'message' => $passwordSetup['message']];
     }
 
-    update_account_fields((int) $account['id'], $userId, [
-        'zeus_status' => 'deployed',
-        'zeus_worker_url' => $finalUrl,
-        'zeus_db_id' => $databaseId,
-        'has_subdomain' => 1,
-    ]);
+    update_account_fields((int) $account['id'], $userId, ['zeus_status' => 'deployed']);
 
     return ['success' => true, 'message' => 'دیپلوی Zeus با موفقیت انجام شد.', 'url' => $finalUrl];
 }

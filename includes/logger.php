@@ -34,6 +34,9 @@ function install_global_error_logging(): void {
             'trace' => mb_substr($e->getTraceAsString(), 0, 1500),
             'url' => $_SERVER['REQUEST_URI'] ?? '',
         ]);
+        if (headers_sent()) {
+            return;
+        }
         if (defined('IS_API')) {
             http_response_code(500);
             header('Content-Type: application/json; charset=utf-8');

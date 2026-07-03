@@ -31,6 +31,7 @@ require __DIR__ . '/includes/layout_header.php';
 <?php endif; ?>
 
 <?php foreach ($accounts as $acc):
+    $acc['zeus_status'] = $acc['zeus_status'] ?? 'idle';
     $locked = !$acc['has_subdomain'];
     $deployedCount = (int) ($acc['status'] === 'deployed') + (int) ($acc['edg_status'] === 'deployed') + (int) ($acc['nahan_status'] === 'deployed') + (int) ($acc['mlm_status'] === 'deployed');
 ?>
