@@ -101,7 +101,7 @@ a:hover { color: var(--primary-strong); }
 .navbar {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-start;
     gap: 12px;
     padding: 12px 24px;
     background: rgba(23, 24, 29, .82);
@@ -127,18 +127,24 @@ a:hover { color: var(--primary-strong); }
     color: var(--primary);
     display: flex; align-items: center; justify-content: center;
 }
-.navbar nav { display: flex; gap: 4px; align-items: center; font-size: 13px; flex-wrap: nowrap; justify-content: flex-end; }
-.navbar nav a {
+.navbar nav { display: flex; gap: 4px; align-items: center; font-size: 13px; flex-wrap: nowrap; justify-content: flex-end; margin-inline-start: auto; }
+.navbar nav a,
+.navbar > .dropdown > a {
     color: var(--text-muted);
     padding: 8px 12px;
     border-radius: 999px;
     display: flex; align-items: center; gap: 6px;
     transition: background-color .15s var(--ease), color .15s var(--ease);
     font-weight: 500;
+    cursor: pointer;
 }
-.navbar nav a:hover { color: var(--text-primary); background: var(--surface-hover); }
-.navbar nav a.active { color: var(--primary); background: var(--primary-soft); }
-.navbar nav a .cw-icon { font-size: 18px; }
+.navbar nav a:hover,
+.navbar > .dropdown > a:hover { color: var(--text-primary); background: var(--surface-hover); }
+.navbar nav a.active,
+.navbar > .dropdown > a.active,
+.navbar > .dropdown.open > a { color: var(--primary); background: var(--primary-soft); }
+.navbar nav a .cw-icon,
+.navbar > .dropdown > a .cw-icon { font-size: 18px; }
 
 .card {
     background: var(--surface-dark);
@@ -353,15 +359,17 @@ table tr:last-child td { border-bottom: none; }
     .navbar nav { gap: 2px; }
     .navbar nav a { padding: 7px 9px; font-size: 12px; }
     .navbar nav a span:not(.cw-icon) { display: none; }
+    .navbar > .dropdown > a { padding: 7px 9px; }
+    .navbar > .dropdown > a span:not(.cw-icon) { display: none; }
     .container { padding: 18px 12px 80px; }
     .card { padding: 16px; border-radius: 16px; }
-    
-    .dropdown { position: static; }
+
     .dropdown-content {
         top: 100%;
-        left: 12px;
-        right: 12px;
-        min-width: 0;
+        right: 0;
+        left: auto;
+        min-width: 180px;
+        max-width: calc(100vw - 24px);
         border-radius: 12px;
         margin-top: 8px;
     }

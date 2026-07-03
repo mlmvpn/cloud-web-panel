@@ -18,20 +18,22 @@ $__user = current_user();
     <a class="brand" href="<?= url($__user ? '/dashboard.php' : '/index.php') ?>">
         <span class="dot"><?= icon('cloud') ?></span> <span>پنل ابری</span>
     </a>
+    <?php if ($__user): ?>
+    <div class="dropdown navbar-info">
+        <a href="javascript:void(0);" class="<?= in_array($activeNav ?? '', ['cf_workers', 'cf_databases', 'cf_kvs']) ? 'active' : '' ?>">
+            <?= icon('info') ?><span>اطلاعات</span>
+        </a>
+        <div class="dropdown-content">
+            <a href="<?= url('/cf_workers.php') ?>"><?= icon('cloud_sync') ?> ورکرها</a>
+            <a href="<?= url('/cf_databases.php') ?>"><?= icon('database') ?> دیتابیس‌ها</a>
+            <a href="<?= url('/cf_kvs.php') ?>"><?= icon('sd_storage') ?> فضاهای KV</a>
+        </div>
+    </div>
+    <?php endif; ?>
     <nav>
         <?php if ($__user): ?>
             <a href="<?= url('/dashboard.php') ?>" class="<?= ($activeNav ?? '') === 'dashboard' ? 'active' : '' ?>"><?= icon('dashboard') ?><span>اکانت‌ها</span></a>
             <a href="<?= url('/groups.php') ?>" class="<?= ($activeNav ?? '') === 'groups' ? 'active' : '' ?>"><?= icon('dns') ?><span>کانفیگ‌ها</span></a>
-            <div class="dropdown">
-                <a href="javascript:void(0);" class="<?= in_array($activeNav ?? '', ['cf_workers', 'cf_databases', 'cf_kvs']) ? 'active' : '' ?>">
-                    <?= icon('info') ?><span>اطلاعات</span>
-                </a>
-                <div class="dropdown-content">
-                    <a href="<?= url('/cf_workers.php') ?>"><?= icon('cloud_sync') ?> ورکرها</a>
-                    <a href="<?= url('/cf_databases.php') ?>"><?= icon('database') ?> دیتابیس‌ها</a>
-                    <a href="<?= url('/cf_kvs.php') ?>"><?= icon('sd_storage') ?> فضاهای KV</a>
-                </div>
-            </div>
             <?php if (current_user_is_admin()): ?>
                 <a href="<?= url('/stats.php') ?>" class="<?= ($activeNav ?? '') === 'stats' ? 'active' : '' ?>"><?= icon('monitoring') ?><span>آمار</span></a>
                 <a href="<?= url('/admin_clean_ips.php') ?>" class="<?= ($activeNav ?? '') === 'admin_clean_ips' ? 'active' : '' ?>"><?= icon('shield') ?><span>IP تمیز</span></a>
