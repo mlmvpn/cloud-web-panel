@@ -17,6 +17,17 @@ $logs = $stmt->fetchAll();
 $levelsStmt = db()->query('SELECT level, COUNT(*) AS c FROM error_logs GROUP BY level ORDER BY c DESC');
 $levelCounts = $levelsStmt->fetchAll();
 
+$copyLines = [];
+foreach ($logs as $row) {
+    $copyLines[] = '[' . $row['created_at'] . '] [' . $row['level'] . '] user:' . ($row['user_id'] ?: '-');
+    $copyLines[] = 'پیام: ' . $row['message'];
+    if ($row['context']) {
+        $copyLines[] = 'جزئیات: ' . $row['context'];
+    }
+    $copyLines[] = '---';
+}
+$copyText = implode("\n", $copyLines);
+
 $pageTitle = 'گزارش خطاها';
 $activeNav = 'admin_logs';
 require __DIR__ . '/includes/layout_header.php';
@@ -35,7 +46,8 @@ require __DIR__ . '/includes/layout_header.php';
         <?php foreach ($levelCounts as $lc): ?>
             <a class="btn btn-sm <?= $levelFilter === $lc['level'] ? 'btn-primary' : 'btn-secondary' ?>" href="<?= url('/admin_logs.php?level=' . urlencode($lc['level'])) ?>"><?= h($lc['level']) ?> (<?= (int) $lc['c'] ?>)</a>
         <?php endforeach; ?>
-        <button class="btn btn-ghost btn-sm" style="margin-inline-start:auto;" onclick="if(confirm('همهٔ گزارش‌ها حذف شوند؟')) CWP.runAction(this, '/api/admin_logs_clear.php', {})"><?= icon('delete') ?> پاک‌کردن همه</button>
+        <button class="btn btn-secondary btn-sm" style="margin-inline-start:auto;" <?= $logs ? '' : 'disabled' ?> data-copy="<?= h($copyText) ?>"><?= icon('content_paste') ?> کپی همه (با جزئیات)</button>
+        <button class="btn btn-ghost btn-sm" onclick="if(confirm('همهٔ گزارش‌ها حذف شوند؟')) CWP.runAction(this, '/api/admin_logs_clear.php', {})"><?= icon('delete') ?> پاک‌کردن همه</button>
     </div>
 </div>
 
