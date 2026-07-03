@@ -51,6 +51,7 @@ $__CLOUD_ACCOUNT_COLUMNS = [
     'edg_worker_url', 'edg_uuid', 'edg_admin_pass', 'edg_kv_namespace_id', 'edg_status',
     'nahan_worker_url', 'nahan_db_id', 'nahan_api_route', 'nahan_master_key', 'nahan_status',
     'mlm_worker_url', 'mlm_db_id', 'mlm_admin_password', 'mlm_status',
+    'zeus_worker_url', 'zeus_db_id', 'zeus_status',
     'token', 'email', 'name',
 ];
 

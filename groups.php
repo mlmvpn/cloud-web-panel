@@ -30,6 +30,7 @@ require __DIR__ . '/includes/layout_header.php';
         cw_copy_all_row('EDG', 'EDG', $counts['EDG']);
         cw_copy_all_row('NHN', 'Nahan', $counts['NHN']);
         cw_copy_all_row('MLM', 'MLM', $counts['MLM']);
+        cw_copy_all_row('ZEUS', 'Zeus', $counts['ZEUS']);
         ?>
     </div>
 </div>

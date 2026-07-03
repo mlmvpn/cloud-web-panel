@@ -119,6 +119,20 @@ require __DIR__ . '/includes/layout_header.php';
             </a>
         </div>
 
+        <?php cw_engine_label('Zeus'); ?>
+        <div class="btn-group">
+            <button class="btn-cell" data-action="deploy_zeus" data-account="<?= (int) $acc['id'] ?>" data-timeout="60000" <?= $acc['zeus_status'] === 'deployed' ? 'disabled' : '' ?>>
+                <?= icon($acc['zeus_status'] === 'deployed' ? 'check_circle' : 'play_arrow') ?>
+                <?= $acc['zeus_status'] === 'deployed' ? 'نصب شده' : 'نصب Zeus' ?>
+            </button>
+            <a class="btn-cell" style="text-decoration:none;<?= $acc['zeus_status'] === 'deployed' ? '' : 'pointer-events:none;color:var(--text-dim);' ?>" href="<?= url('/zeus_users.php?account_id=' . (int) $acc['id']) ?>">
+                <?= icon('group') ?> کاربران
+            </a>
+            <a class="btn-cell" style="text-decoration:none;<?= $acc['zeus_status'] === 'deployed' ? '' : 'pointer-events:none;color:var(--text-dim);' ?>" href="<?= url('/settings_zeus.php?account_id=' . (int) $acc['id']) ?>">
+                <?= icon('tune') ?> تنظیمات
+            </a>
+        </div>
+
         <div class="btn-cell" style="border-top:1px solid var(--border-dark);text-align:center;padding:12px;" data-action="usage" data-account="<?= (int) $acc['id'] ?>">
             <?= icon('monitoring') ?> مصرف روزانه
         </div>
@@ -164,6 +178,7 @@ document.addEventListener('click', function (e) {
         deploy_nahan: '/api/deploy_nahan.php',
         fetch_nahan: '/api/fetch_nahan.php',
         deploy_mlm: '/api/deploy_mlm.php',
+        deploy_zeus: '/api/deploy_zeus.php',
         create_subdomain: '/api/create_subdomain.php',
         check_status: '/api/check_status.php',
     };
@@ -192,7 +207,8 @@ document.addEventListener('click', function (e) {
 
     var endpoint = endpoints[action];
     if (endpoint) {
-        CWP.runAction(btn, endpoint, { account_id: accountId });
+        var timeoutAttr = btn.getAttribute('data-timeout');
+        CWP.runAction(btn, endpoint, { account_id: accountId }, timeoutAttr ? { timeoutMs: parseInt(timeoutAttr, 10) } : undefined);
     }
 });
 

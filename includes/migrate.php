@@ -35,6 +35,15 @@ function ensure_schema(): void {
 
         @file_put_contents($markerFileV4, date('c'));
     }
+
+    $markerFileV5 = __DIR__ . '/.schema_v5';
+    if (!file_exists($markerFileV5)) {
+        ensure_column('cloud_accounts', 'zeus_worker_url', 'VARCHAR(255) DEFAULT NULL');
+        ensure_column('cloud_accounts', 'zeus_db_id', 'VARCHAR(64) DEFAULT NULL');
+        ensure_column('cloud_accounts', 'zeus_status', "VARCHAR(32) NOT NULL DEFAULT 'idle'");
+
+        @file_put_contents($markerFileV5, date('c'));
+    }
 }
 
 function ensure_column(string $table, string $column, string $definition): void {

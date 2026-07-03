@@ -5,6 +5,7 @@ config.php
 includes/.schema_v2
 includes/.schema_v3
 includes/.schema_v4
+includes/.schema_v5
 
 # سیستم‌عامل / ادیتور
 .DS_Store

@@ -96,5 +96,6 @@ require_once __DIR__ . '/engines/bpb.php';
 require_once __DIR__ . '/engines/edg.php';
 require_once __DIR__ . '/engines/nahan.php';
 require_once __DIR__ . '/engines/mlm.php';
+require_once __DIR__ . '/engines/zeus.php';
 
 ensure_schema();

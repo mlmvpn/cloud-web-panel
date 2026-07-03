@@ -88,7 +88,7 @@ function count_user_uris_by_engine(int $userId): array {
         GROUP BY n.engine_type
     ');
     $stmt->execute([$userId]);
-    $out = ['BPB' => 0, 'EDG' => 0, 'NHN' => 0, 'MLM' => 0];
+    $out = ['BPB' => 0, 'EDG' => 0, 'NHN' => 0, 'MLM' => 0, 'ZEUS' => 0];
     foreach ($stmt->fetchAll() as $row) {
         $out[$row['engine_type']] = (int) $row['c'];
     }
