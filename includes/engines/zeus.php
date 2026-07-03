@@ -4,14 +4,39 @@ define('ZEUS_PANEL_PASSWORD', 'Admin123!');
 
 function cw_zeus_deploy(array $account, int $userId): array {
     if (!empty($account['zeus_worker_url'])) {
-        $passwordSetup = cw_zeus_ensure_password($account['zeus_worker_url']);
-        if (!$passwordSetup['success']) {
-            return ['success' => false, 'message' => $passwordSetup['message']];
-        }
-        update_account_fields((int) $account['id'], $userId, ['zeus_status' => 'deployed']);
-        return ['success' => true, 'message' => 'دیپلوی Zeus با موفقیت انجام شد.', 'url' => $account['zeus_worker_url']];
+        return cw_zeus_resume_deploy($account, $userId);
     }
 
+    $lock = cw_deploy_lock((int) $account['id'], 'zeus');
+    if ($lock === false) {
+        return ['success' => false, 'message' => 'یک درخواست دیپلوی Zeus برای این اکانت هم‌اکنون در حال انجام است. چند ثانیه صبر کنید و دوباره امتحان کنید.'];
+    }
+    if ($lock === null) {
+        return ['success' => false, 'message' => 'خطای داخلی سرور. دوباره تلاش کنید.'];
+    }
+
+    try {
+        $fresh = get_account_for_user((int) $account['id'], $userId);
+        if ($fresh && !empty($fresh['zeus_worker_url'])) {
+            return cw_zeus_resume_deploy($fresh, $userId);
+        }
+
+        return cw_zeus_deploy_fresh($account, $userId);
+    } finally {
+        cw_deploy_unlock($lock);
+    }
+}
+
+function cw_zeus_resume_deploy(array $account, int $userId): array {
+    $passwordSetup = cw_zeus_ensure_password($account['zeus_worker_url']);
+    if (!$passwordSetup['success']) {
+        return ['success' => false, 'message' => $passwordSetup['message']];
+    }
+    update_account_fields((int) $account['id'], $userId, ['zeus_status' => 'deployed']);
+    return ['success' => true, 'message' => 'دیپلوی Zeus با موفقیت انجام شد.', 'url' => $account['zeus_worker_url']];
+}
+
+function cw_zeus_deploy_fresh(array $account, int $userId): array {
     $token = account_auth_token($account);
     $email = $account['email'];
     $accountId = $account['account_id'];
@@ -220,4 +245,23 @@ function cw_zeus_get_user_configs(array $account, string $username): array {
         }
     }
     return ['success' => true, 'configs' => $configs];
+}
+
+function cw_zeus_remove_deploy(array $account, int $userId): array {
+    if (empty($account['zeus_worker_url'])) {
+        return ['success' => false, 'message' => 'Zeus برای این اکانت دیپلوی نشده است.'];
+    }
+    $workerName = cw_extract_worker_name($account['zeus_worker_url']);
+    if ($workerName !== '') {
+        cf_delete_worker($account, $workerName);
+    }
+    if (!empty($account['zeus_db_id'])) {
+        cf_delete_d1_database($account, $account['zeus_db_id']);
+    }
+    update_account_fields((int) $account['id'], $userId, [
+        'zeus_worker_url' => null,
+        'zeus_db_id' => null,
+        'zeus_status' => 'idle',
+    ]);
+    return ['success' => true, 'message' => 'دیپلوی Zeus حذف شد. حالا می‌توانید دوباره نصب کنید.'];
 }

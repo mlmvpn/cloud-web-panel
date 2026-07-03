@@ -44,6 +44,46 @@ function mask_token(string $token): string {
     return mb_substr($token, 0, 8) . '••••';
 }
 
+function cf_delete_worker(array $account, string $workerName): array {
+    $token = account_auth_token($account);
+    $email = $account['email'];
+    $accountId = $account['account_id'];
+    return cf_api('DELETE', "https://api.cloudflare.com/client/v4/accounts/{$accountId}/workers/scripts/{$workerName}", $token, $email);
+}
+
+function cf_delete_d1_database(array $account, string $databaseId): array {
+    $token = account_auth_token($account);
+    $email = $account['email'];
+    $accountId = $account['account_id'];
+    return cf_api('DELETE', "https://api.cloudflare.com/client/v4/accounts/{$accountId}/d1/database/{$databaseId}", $token, $email);
+}
+
+function cw_extract_worker_name(string $workerUrl): string {
+    $host = parse_url($workerUrl, PHP_URL_HOST) ?: '';
+    $parts = explode('.', $host);
+    return $parts[0] ?? '';
+}
+
+function cw_deploy_lock(int $accountRowId, string $engine) {
+    $lockFile = sys_get_temp_dir() . '/cwp_deploy_' . $engine . '_' . $accountRowId . '.lock';
+    $handle = @fopen($lockFile, 'c');
+    if ($handle === false) {
+        return null;
+    }
+    if (!flock($handle, LOCK_EX | LOCK_NB)) {
+        fclose($handle);
+        return false;
+    }
+    return $handle;
+}
+
+function cw_deploy_unlock($handle): void {
+    if (is_resource($handle)) {
+        flock($handle, LOCK_UN);
+        fclose($handle);
+    }
+}
+
 $__CLOUD_ACCOUNT_COLUMNS = [
     'status', 'is_email_verified', 'has_subdomain', 'auth_type',
     'oauth_refresh_token', 'oauth_expires_at',

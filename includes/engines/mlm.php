@@ -2,6 +2,30 @@
 define('MLM_WORKER_ASSET', __DIR__ . '/../../assets/workers/mlm_worker.js');
 
 function cw_mlm_deploy(array $account, int $userId): array {
+    if (!empty($account['mlm_worker_url'])) {
+        return ['success' => true, 'message' => 'قبلاً دیپلوی شده است.', 'url' => $account['mlm_worker_url']];
+    }
+
+    $lock = cw_deploy_lock((int) $account['id'], 'mlm');
+    if ($lock === false) {
+        return ['success' => false, 'message' => 'یک درخواست دیپلوی MLM برای این اکانت هم‌اکنون در حال انجام است. چند ثانیه صبر کنید و دوباره امتحان کنید.'];
+    }
+    if ($lock === null) {
+        return ['success' => false, 'message' => 'خطای داخلی سرور. دوباره تلاش کنید.'];
+    }
+
+    try {
+        $fresh = get_account_for_user((int) $account['id'], $userId);
+        if ($fresh && !empty($fresh['mlm_worker_url'])) {
+            return ['success' => true, 'message' => 'قبلاً دیپلوی شده است.', 'url' => $fresh['mlm_worker_url']];
+        }
+        return cw_mlm_deploy_fresh($account, $userId);
+    } finally {
+        cw_deploy_unlock($lock);
+    }
+}
+
+function cw_mlm_deploy_fresh(array $account, int $userId): array {
     $token = account_auth_token($account);
     $email = $account['email'];
     $accountId = $account['account_id'];
@@ -192,4 +216,23 @@ function cw_mlm_get_user_configs(array $account, string $username): array {
         }
     }
     return ['success' => true, 'configs' => $configs];
+}
+
+function cw_mlm_remove_deploy(array $account, int $userId): array {
+    if (empty($account['mlm_worker_url'])) {
+        return ['success' => false, 'message' => 'MLM برای این اکانت دیپلوی نشده است.'];
+    }
+    $workerName = cw_extract_worker_name($account['mlm_worker_url']);
+    if ($workerName !== '') {
+        cf_delete_worker($account, $workerName);
+    }
+    if (!empty($account['mlm_db_id'])) {
+        cf_delete_d1_database($account, $account['mlm_db_id']);
+    }
+    update_account_fields((int) $account['id'], $userId, [
+        'mlm_worker_url' => null,
+        'mlm_db_id' => null,
+        'mlm_status' => 'idle',
+    ]);
+    return ['success' => true, 'message' => 'دیپلوی MLM حذف شد. حالا می‌توانید دوباره نصب کنید.'];
 }
