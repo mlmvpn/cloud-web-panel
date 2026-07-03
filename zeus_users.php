@@ -181,7 +181,7 @@ document.getElementById('userModalSaveBtn').addEventListener('click', function (
     var endpoint = editing ? '/api/zeus_user_update.php' : '/api/zeus_user_create.php';
     CWP.runAction(this, endpoint, payload, { reload: false, onSuccess: function () {
         closeUserModal();
-        loadUsers();
+        setTimeout(loadUsers, 1200);
     } });
 });
 
