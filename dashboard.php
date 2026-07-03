@@ -31,9 +31,7 @@ require __DIR__ . '/includes/layout_header.php';
 <?php endif; ?>
 
 <?php foreach ($accounts as $acc):
-    $needsEmailVerify = !$acc['is_email_verified'];
-    $needsSubdomain = !$needsEmailVerify && !$acc['has_subdomain'];
-    $locked = $needsEmailVerify || $needsSubdomain;
+    $locked = !$acc['has_subdomain'];
     $deployedCount = (int) ($acc['status'] === 'deployed') + (int) ($acc['edg_status'] === 'deployed') + (int) ($acc['nahan_status'] === 'deployed') + (int) ($acc['mlm_status'] === 'deployed');
 ?>
 <div class="card" style="padding:0;overflow:hidden;">
@@ -57,21 +55,12 @@ require __DIR__ . '/includes/layout_header.php';
 
     <?php if ($locked): ?>
         <div style="padding:28px 18px;text-align:center;background:var(--surface-2);border-top:1px solid var(--border-dark);">
-            <?php if ($needsEmailVerify): ?>
-                <div style="color:var(--yellow-warn);margin-bottom:10px;"><?= icon('mark_email_unread', 'icon-lg') ?></div>
-                <p class="text-sm muted" style="margin-bottom:14px;">قبل از دیپلوی، باید ایمیل اکانت کلادفلر خود را تأیید کنید.</p>
-                <div class="flex gap-8" style="justify-content:center;flex-wrap:wrap;">
-                    <a class="btn btn-secondary btn-sm" href="https://dash.cloudflare.com/profile" target="_blank" rel="noopener"><?= icon('open_in_new') ?> رفتن به پروفایل Cloudflare</a>
-                    <button class="btn btn-primary btn-sm" data-action="check_status" data-account="<?= (int) $acc['id'] ?>"><?= icon('refresh') ?> بررسی وضعیت تأیید</button>
-                </div>
-            <?php else: ?>
-                <div style="color:var(--primary);margin-bottom:10px;"><?= icon('dns', 'icon-lg') ?></div>
-                <p class="text-sm muted" style="margin-bottom:14px;">برای دیپلوی، باید یک ساب‌دامین workers.dev بسازید (یک‌بار، خودکار).</p>
-                <div class="flex gap-8" style="justify-content:center;flex-wrap:wrap;">
-                    <button class="btn btn-primary btn-sm" data-action="create_subdomain" data-account="<?= (int) $acc['id'] ?>"><?= icon('add_link') ?> ساخت ساب‌دامین</button>
-                    <button class="btn btn-secondary btn-sm" data-action="check_status" data-account="<?= (int) $acc['id'] ?>"><?= icon('refresh') ?> بررسی مجدد</button>
-                </div>
-            <?php endif; ?>
+            <div style="color:var(--primary);margin-bottom:10px;"><?= icon('dns', 'icon-lg') ?></div>
+            <p class="text-sm muted" style="margin-bottom:14px;">برای دیپلوی، باید یک ساب‌دامین workers.dev بسازید (یک‌بار، خودکار).</p>
+            <div class="flex gap-8" style="justify-content:center;flex-wrap:wrap;">
+                <button class="btn btn-primary btn-sm" data-action="create_subdomain" data-account="<?= (int) $acc['id'] ?>"><?= icon('add_link') ?> ساخت ساب‌دامین</button>
+                <button class="btn btn-secondary btn-sm" data-action="check_status" data-account="<?= (int) $acc['id'] ?>"><?= icon('refresh') ?> بررسی مجدد</button>
+            </div>
         </div>
     <?php else: ?>
         <?php cw_engine_label('BPB'); ?>
@@ -152,7 +141,10 @@ require __DIR__ . '/includes/layout_header.php';
         <div class="field">
             <label>Global API Key</label>
             <input type="text" id="acc_token" placeholder="از داشبورد کلادفلر → My Profile → API Tokens">
-            <p class="help-text">مسیر دریافت: dash.cloudflare.com → پروفایل → API Tokens → Global API Key → View</p>
+            <p class="help-text">
+                برای دریافت کلید، وارد صفحهٔ API Tokens اکانت کلادفلر خودتان شوید و بخش Global API Key را View کنید.
+            </p>
+            <a class="btn btn-secondary btn-sm" style="margin-top:8px;" href="https://dash.cloudflare.com/profile/api-tokens" target="_blank" rel="noopener"><?= icon('open_in_new') ?> رفتن به صفحهٔ دریافت Global API Key</a>
         </div>
         <button class="btn btn-primary btn-block" id="addAccBtn"><?= icon('link') ?> ذخیره و اتصال</button>
     </div>

@@ -83,7 +83,6 @@ function delete_cloud_account(int $accountRowId, int $userId): bool {
 
 function cf_check_account_status(string $token, string $email, string $accountId): array {
     $hasSubdomain = false;
-    $isEmailVerified = false;
 
     $sub = cf_api('GET', "https://api.cloudflare.com/client/v4/accounts/{$accountId}/workers/subdomain", $token, $email);
     if ($sub['ok'] && $sub['json'] && !empty($sub['json']['success'])) {
@@ -93,16 +92,7 @@ function cf_check_account_status(string $token, string $email, string $accountId
         }
     }
 
-    if ($hasSubdomain) {
-        $isEmailVerified = true;
-    } else {
-        $user = cf_api('GET', 'https://api.cloudflare.com/client/v4/user', $token, $email);
-        if ($user['ok'] && $user['json'] && !empty($user['json']['success'])) {
-            $isEmailVerified = (bool) ($user['json']['result']['email_verified'] ?? false);
-        }
-    }
-
-    return ['has_subdomain' => $hasSubdomain, 'is_email_verified' => $isEmailVerified];
+    return ['has_subdomain' => $hasSubdomain];
 }
 
 function cf_add_account(int $userId, string $rawToken, string $rawEmail): array {
@@ -149,7 +139,7 @@ function cf_add_account(int $userId, string $rawToken, string $rawEmail): array 
 
     $stmt = db()->prepare('INSERT INTO cloud_accounts
         (user_id, email, token, name, account_id, status, is_email_verified, has_subdomain)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?)');
+        VALUES (?, ?, ?, ?, ?, ?, 1, ?)');
     $stmt->execute([
         $userId,
         $email,
@@ -157,7 +147,6 @@ function cf_add_account(int $userId, string $rawToken, string $rawEmail): array 
         $accountName,
         $accountId,
         'active',
-        $status['is_email_verified'] ? 1 : 0,
         $status['has_subdomain'] ? 1 : 0,
     ]);
 

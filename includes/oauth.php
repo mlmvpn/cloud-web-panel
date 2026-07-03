@@ -135,10 +135,10 @@ function cf_oauth_link_account(int $userId, array $tokenResult): array {
     $status = cf_check_account_status($accessToken, '', $accountId);
     $stmt = db()->prepare('INSERT INTO cloud_accounts
         (user_id, email, token, name, account_id, status, is_email_verified, has_subdomain, auth_type, oauth_refresh_token, oauth_expires_at)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
+        VALUES (?, ?, ?, ?, ?, ?, 1, ?, ?, ?, ?)');
     $stmt->execute([
         $userId, $email, $encToken, $accountName, $accountId, 'active',
-        $status['is_email_verified'] ? 1 : 0, $status['has_subdomain'] ? 1 : 0,
+        $status['has_subdomain'] ? 1 : 0,
         'oauth', $encRefresh, $expiresAt,
     ]);
 
