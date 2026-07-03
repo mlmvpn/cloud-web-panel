@@ -41,6 +41,16 @@ require __DIR__ . '/includes/layout_header.php';
 <?= alert_box('info', 'این لیست خطاهایی است که در سیستم رخ داده — چه خطاهای برنامه و چه خطاهای ارتباط با Cloudflare. برای بررسی روزانه از همین صفحه استفاده کنید.') ?>
 
 <div class="card">
+    <div class="flex-between" style="flex-wrap:wrap;gap:10px;align-items:center;">
+        <div>
+            <div style="font-weight:600;font-size:14px;"><?= icon('refresh', 'icon-sm') ?> پاک‌کردن کش سایت</div>
+            <p class="text-sm muted" style="margin:4px 0 0;">اگر بعد از به‌روزرسانی فایل‌ها، ظاهر یا رفتار پنل روی گوشی کاربران قدیمی مانده، این دکمه را بزنید تا مرورگر همهٔ کاربران نسخهٔ تازهٔ فایل‌های سایت (CSS/JS) را دوباره بارگیری کند.</p>
+        </div>
+        <button class="btn btn-primary btn-sm" onclick="CWP.runAction(this, '/api/admin_clear_cache.php', {}, {reload:false})"><?= icon('refresh') ?> پاک‌کردن کش</button>
+    </div>
+</div>
+
+<div class="card">
     <div class="flex gap-8" style="flex-wrap:wrap;align-items:center;">
         <a class="btn btn-sm <?= $levelFilter === '' ? 'btn-primary' : 'btn-secondary' ?>" href="<?= url('/admin_logs.php') ?>">همه (<?= array_sum(array_column($levelCounts, 'c')) ?>)</a>
         <?php foreach ($levelCounts as $lc): ?>

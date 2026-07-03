@@ -7,6 +7,9 @@ includes/.schema_v3
 includes/.schema_v4
 includes/.schema_v5
 
+# نسخهٔ کش دارایی‌ها (با دکمهٔ «پاک‌کردن کش» ساخته/به‌روز می‌شود)
+includes/asset_version.txt
+
 # سیستم‌عامل / ادیتور
 .DS_Store
 Thumbs.db

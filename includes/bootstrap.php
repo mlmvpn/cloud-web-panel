@@ -53,6 +53,31 @@ function alert_box(string $type, string $message): string {
     return '<div class="alert alert-' . h($type) . '">' . icon($iconName) . '<span>' . h($message) . '</span></div>';
 }
 
+function asset_version(): int {
+    static $v = null;
+    if ($v !== null) {
+        return $v;
+    }
+    $times = [];
+    $override = @file_get_contents(__DIR__ . '/asset_version.txt');
+    if ($override !== false && trim($override) !== '') {
+        $times[] = (int) trim($override);
+    }
+    foreach (['/../assets/css/style.css', '/../assets/js/app.js'] as $rel) {
+        $m = @filemtime(__DIR__ . $rel);
+        if ($m) {
+            $times[] = $m;
+        }
+    }
+    $v = $times ? max($times) : 1;
+    return $v;
+}
+
+if (!headers_sent()) {
+    header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
+    header('Pragma: no-cache');
+}
+
 if (session_status() === PHP_SESSION_NONE) {
     session_set_cookie_params([
         'lifetime' => 0,
@@ -91,6 +116,7 @@ require_once __DIR__ . '/accounts.php';
 require_once __DIR__ . '/oauth.php';
 require_once __DIR__ . '/groups.php';
 require_once __DIR__ . '/clean_ips.php';
+require_once __DIR__ . '/stats.php';
 require_once __DIR__ . '/migrate.php';
 require_once __DIR__ . '/engines/bpb.php';
 require_once __DIR__ . '/engines/edg.php';

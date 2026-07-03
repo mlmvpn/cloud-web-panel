@@ -127,7 +127,7 @@ a:hover { color: var(--primary-strong); }
     color: var(--primary);
     display: flex; align-items: center; justify-content: center;
 }
-.navbar nav { display: flex; gap: 4px; align-items: center; font-size: 13px; flex-wrap: wrap; justify-content: flex-end; }
+.navbar nav { display: flex; gap: 4px; align-items: center; font-size: 13px; flex-wrap: nowrap; justify-content: flex-end; }
 .navbar nav a {
     color: var(--text-muted);
     padding: 8px 12px;
@@ -355,4 +355,217 @@ table tr:last-child td { border-bottom: none; }
     .navbar nav a span:not(.cw-icon) { display: none; }
     .container { padding: 18px 12px 80px; }
     .card { padding: 16px; border-radius: 16px; }
+    
+    .dropdown { position: static; }
+    .dropdown-content {
+        top: 100%;
+        left: 12px;
+        right: 12px;
+        min-width: 0;
+        border-radius: 12px;
+        margin-top: 8px;
+    }
+    .dropdown-content a {
+        padding: 12px 16px !important;
+        font-size: 14px;
+    }
+}
+
+/* ── Stats Page Styles ── */
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+}
+@media (max-width: 900px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 480px) { .stats-grid { grid-template-columns: 1fr; } }
+
+.stat-card {
+    position: relative;
+    background: var(--surface-dark);
+    border: 1px solid var(--border-dark);
+    border-radius: var(--radius);
+    padding: 22px 20px;
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    overflow: hidden;
+    transition: border-color .25s var(--ease), transform .2s var(--ease), box-shadow .25s var(--ease);
+}
+.stat-card:hover {
+    border-color: var(--border-strong);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+.stat-card__icon {
+    width: 44px; height: 44px;
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    font-size: 22px;
+}
+.stat-card--users .stat-card__icon { background: rgba(138,180,248,.14); color: #8AB4F8; }
+.stat-card--deploys .stat-card__icon { background: rgba(129,201,149,.14); color: #81C995; }
+.stat-card--configs .stat-card__icon { background: rgba(253,214,99,.14); color: #FDD663; }
+.stat-card--accounts .stat-card__icon { background: rgba(197,138,249,.14); color: #C58AF9; }
+
+.stat-card__body { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.stat-card__label { font-size: 12px; color: var(--text-dim); font-weight: 500; }
+.stat-card__value { font-size: 28px; font-weight: 800; letter-spacing: -.02em; }
+.stat-card--users .stat-card__value { color: #8AB4F8; }
+.stat-card--deploys .stat-card__value { color: #81C995; }
+.stat-card--configs .stat-card__value { color: #FDD663; }
+.stat-card--accounts .stat-card__value { color: #C58AF9; }
+
+.stat-card__glow {
+    position: absolute;
+    width: 100px; height: 100px;
+    border-radius: 50%;
+    top: -30px; left: -30px;
+    opacity: .08;
+    pointer-events: none;
+    filter: blur(30px);
+}
+.stat-card--users .stat-card__glow { background: #8AB4F8; }
+.stat-card--deploys .stat-card__glow { background: #81C995; }
+.stat-card--configs .stat-card__glow { background: #FDD663; }
+.stat-card--accounts .stat-card__glow { background: #C58AF9; }
+
+/* Chart Header & Time Tabs */
+.chart-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 22px 0;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+.time-tabs {
+    display: flex;
+    gap: 4px;
+    background: var(--surface-2);
+    border: 1px solid var(--border-dark);
+    border-radius: 999px;
+    padding: 3px;
+}
+.time-tab {
+    padding: 6px 16px;
+    border-radius: 999px;
+    border: none;
+    background: transparent;
+    color: var(--text-dim);
+    font-size: 12px;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all .2s var(--ease);
+}
+.time-tab:hover { color: var(--text-primary); background: var(--surface-hover); }
+.time-tab.active { color: var(--on-primary); background: var(--primary); box-shadow: var(--shadow-sm); }
+
+/* Chart Animations */
+.bar-animate {
+    animation: barGrow .6s var(--ease) both;
+}
+@keyframes barGrow {
+    from { transform: scaleY(0); transform-origin: bottom; }
+    to { transform: scaleY(1); transform-origin: bottom; }
+}
+.donut-seg {
+    animation: donutDraw .8s var(--ease) both;
+}
+@keyframes donutDraw {
+    from { stroke-dasharray: 0 999; }
+}
+.chart-line {
+    animation: lineReveal .8s var(--ease) both;
+}
+@keyframes lineReveal {
+    from { stroke-dashoffset: 2000; stroke-dasharray: 2000; }
+    to { stroke-dashoffset: 0; stroke-dasharray: 2000; }
+}
+.chart-area {
+    animation: areaFade .6s var(--ease) both;
+    animation-delay: .3s;
+}
+@keyframes areaFade {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+.chart-dot {
+    animation: dotPop .4s var(--ease) both;
+    animation-delay: .5s;
+}
+@keyframes dotPop {
+    from { r: 0; }
+}
+
+/* Chart Legend */
+.chart-legend {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    padding: 14px 20px 6px;
+    flex-wrap: wrap;
+}
+.chart-legend__item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--text-muted);
+    font-weight: 500;
+}
+.chart-legend__dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+
+/* Dropdown Menu */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: var(--surface-3);
+    min-width: 160px;
+    box-shadow: var(--shadow-lg);
+    border: 1px solid var(--border-dark);
+    border-radius: 8px;
+    z-index: 100;
+    top: 100%;
+    right: 0;
+    padding: 8px 0;
+    margin-top: 0;
+}
+.dropdown-content a {
+    color: var(--text-primary) !important;
+    padding: 10px 16px !important;
+    text-decoration: none;
+    display: flex !important;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    background: transparent !important;
+}
+.dropdown-content a:hover {
+    background-color: var(--surface-hover) !important;
+    color: var(--primary) !important;
+}
+.dropdown.open .dropdown-content {
+    display: block;
+}
+@media (hover: hover) {
+    .dropdown:hover .dropdown-content {
+        display: block;
+    }
+    .dropdown:hover > a {
+        color: var(--on-surface);
+        background: var(--surface-hover);
+    }
 }
